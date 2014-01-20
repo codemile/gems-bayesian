@@ -6,42 +6,45 @@ namespace BayesianTest.Words
     [TestClass]
     public class MinMaxProcessorTest
     {
-        public string[] to_short = {
-                                       "a",
-                                       "aa",
-                                       "aaa"
-                                   };
+        private readonly string[] _justRight =
+        {
+            "12345",
+            "123456",
+            "1234567"
+        };
 
-        public string[] to_long = {
-                                      "1234567890",
-                                      "12345678901",
-                                      "12345678902"
-                                  };
+        private readonly string[] _toLong =
+        {
+            "1234567890",
+            "12345678901",
+            "12345678902"
+        };
 
-        public string[] just_right = {
-                                         "12345",
-                                         "123456",
-                                         "1234567"
-                                     };
+        private readonly string[] _toShort =
+        {
+            "a",
+            "aa",
+            "aaa"
+        };
 
         [TestMethod]
         public void Test_Min_Max()
         {
             MinMaxProcessor proc = new MinMaxProcessor(3, 10);
 
-            foreach (string str in to_short)
+            foreach (string str in _toShort)
             {
-                Assert.IsNull(proc.process(str));
+                Assert.IsNull(proc.Process(str));
             }
 
-            foreach (string str in to_long)
+            foreach (string str in _toLong)
             {
-                Assert.IsNull(proc.process(str));
+                Assert.IsNull(proc.Process(str));
             }
 
-            foreach (string str in just_right)
+            foreach (string str in _justRight)
             {
-                Assert.AreEqual(str, proc.process(str));
+                Assert.AreEqual(str, proc.Process(str));
             }
         }
     }

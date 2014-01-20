@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Bayesian.Words;
@@ -6,7 +7,6 @@ using Bayesian.Words;
 namespace Bayesian
 {
     /// <summary>
-    /// 
     /// </summary>
     public class Tokens : ICollection<string>
     {
@@ -16,9 +16,9 @@ namespace Bayesian
         private const string _TOKEN_PATTERN = @"(?si:)\b(?<val>[a-zA-Z][a-zA-Z0-9]{1,50})\b";
 
         /// <summary>
-        /// How many tokens.
+        /// Process the tokens before they are added.
         /// </summary>
-        public int Count { get { return _tokens.Count; } }
+        private readonly Processors _processors;
 
         /// <summary>
         /// Collection
@@ -26,9 +26,12 @@ namespace Bayesian
         private readonly List<string> _tokens;
 
         /// <summary>
-        /// Process the tokens before they are added.
+        /// Enumerator
         /// </summary>
-        private readonly Processors _processors;
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _tokens.GetEnumerator();
+        }
 
         /// <summary>
         /// Constructor
@@ -64,10 +67,18 @@ namespace Bayesian
         public Tokens(IEnumerable<string> pTokens, Processors pProc)
             : this(pProc)
         {
-            foreach (string token in pTokens.Where(pToken => Regex.IsMatch(pToken, _TOKEN_PATTERN)))
+            foreach (string token in pTokens.Where(pToken=>Regex.IsMatch(pToken, _TOKEN_PATTERN)))
             {
                 Add(token);
             }
+        }
+
+        /// <summary>
+        /// How many tokens.
+        /// </summary>
+        public int Count
+        {
+            get { return _tokens.Count; }
         }
 
         /// <summary>
@@ -75,7 +86,7 @@ namespace Bayesian
         /// </summary>
         public void Add(string pToken)
         {
-            string token = _processors.process(pToken);
+            string token = _processors.Process(pToken);
             if (token != null)
             {
                 _tokens.Add(token);
@@ -126,14 +137,6 @@ namespace Bayesian
         /// Enumerator
         /// </summary>
         public IEnumerator<string> GetEnumerator()
-        {
-            return _tokens.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Enumerator
-        /// </summary>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _tokens.GetEnumerator();
         }

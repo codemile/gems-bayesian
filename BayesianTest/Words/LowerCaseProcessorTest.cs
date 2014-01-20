@@ -11,9 +11,9 @@ namespace BayesianTest.Words
         {
             LowerCaseProcessor proc = new LowerCaseProcessor();
 
-            Assert.AreEqual("something", proc.process("SomeThing"));
-            Assert.AreEqual("something", proc.process("SOMETHING"));
-            Assert.AreEqual("something", proc.process("something"));
+            Assert.AreEqual("something", proc.Process("SomeThing"));
+            Assert.AreEqual("something", proc.Process("SOMETHING"));
+            Assert.AreEqual("something", proc.Process("something"));
         }
     }
 }

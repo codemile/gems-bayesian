@@ -29,7 +29,7 @@ namespace Bayesian.Words
         /// <summary>
         /// Perform the test.
         /// </summary>
-        public string process(string pStr)
+        public string Process(string pStr)
         {
             return _reg.IsMatch(pStr) ? pStr : null;
         }

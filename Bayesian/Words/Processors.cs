@@ -10,11 +10,11 @@ namespace Bayesian.Words
         /// <summary>
         /// Processes the collection.
         /// </summary>
-        public string process(string pStr)
+        public string Process(string pStr)
         {
             foreach (iWordProcessor proc in this)
             {
-                pStr = proc.process(pStr);
+                pStr = proc.Process(pStr);
                 if (pStr == null)
                 {
                     return null;

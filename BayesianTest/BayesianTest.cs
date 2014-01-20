@@ -6,16 +6,16 @@ namespace BayesianTest
 {
     public class BayesianTest
     {
-        public TokenCollection create(string[] pTokens)
+        protected static TokenCollection Create(string[] pTokens)
         {
             TokenCollection a = new TokenCollection();
             foreach (string token in pTokens)
             {
-                a.add(token);
+                a.Add(token);
             }
 
-            Assert.AreEqual(pTokens.Length, a.sum);
-            Assert.AreEqual(pTokens.Distinct().Count(), a.count);
+            Assert.AreEqual(pTokens.Length, a.Sum);
+            Assert.AreEqual(pTokens.Distinct().Count(), a.Count);
             foreach (string token in pTokens)
             {
                 Assert.AreNotEqual(0, a.get(token));

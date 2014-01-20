@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B2F57680-662D-4CDC-A2B2-56B9AE7FB895}</ProjectGuid>
+    <ProjectGuid>{53600A0A-4AB4-4CC9-9D82-E77239059629}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bayesian</RootNamespace>
@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analyzer.cs" />
-    <Compile Include="Filter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenCollection.cs" />
     <Compile Include="TokenProcessor.cs" />

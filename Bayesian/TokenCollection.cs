@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
 
@@ -10,154 +11,48 @@ namespace Bayesian
     public class TokenCollection
     {
         /// <summary>
-        /// Serializable data
-        /// </summary>
-        public class TokenData
-        {
-            /// <summary>
-            /// The sum of all token counts.
-            /// </summary>
-            [ScriptIgnore]
-            public int sum { get { return tokens.Values.Sum(); } }
-
-            /// <summary>
-            /// Token counter.
-            /// </summary>
-            public Dictionary<string, int> tokens { get; private set; }
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            public TokenData()
-            {
-                tokens = new Dictionary<string, int>();
-            }
-
-            /// <summary>
-            /// Copy constructor
-            /// </summary>
-            public TokenData(TokenData pData)
-            {
-                tokens = new Dictionary<string, int>(pData.tokens);
-            }
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            public TokenData(Dictionary<string, int> pTokens)
-            {
-                tokens = pTokens;
-            }
-        }
-
-        /// <summary>
-        /// Converts JSON into a TokenCollection object.
-        /// </summary>
-        public static TokenCollection deserialize(string pJSON)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, int> tokens = serializer.Deserialize<Dictionary<string, int>>(pJSON);
-            return new TokenCollection(tokens);
-        }
-
-        /// <summary>
-        /// Converts a TokenCollection object into JSON
-        /// </summary>
-        public static string serialize(TokenCollection pCollection)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            return serializer.Serialize(pCollection._data.tokens);
-        }
-
-        /// <summary>
-        /// Subtracts the counts from a collection.
-        /// 
-        /// Only tokens that exist in the destination will be subtracted.
-        /// </summary>
-        public static TokenCollection subtract(TokenCollection pDest, TokenCollection pSrc)
-        {
-            if (pDest.sum < pSrc.sum)
-            {
-                throw new System.ArgumentException("Can not subtract a larger collection");
-            }
-
-            pSrc = TokenCollection.exclude(pDest._data.tokens.Keys, pSrc);
-
-            TokenData copy = new TokenData(pDest._data);
-            foreach (string token in pSrc._data.tokens.Keys)
-            {
-                copy.tokens[token] -= pSrc._data.tokens[token];
-                if (copy.tokens[token] <= 0)
-                {
-                    copy.tokens.Remove(token);
-                }
-            }
-
-            return new TokenCollection(copy);
-        }
-
-        /// <summary>
-        /// Adds the counts from a collection.
-        /// 
-        /// Only tokens that exist in the destination will be added.
-        /// </summary>
-        public static TokenCollection add(TokenCollection pDest, TokenCollection pSrc)
-        {
-            pSrc = exclude(pDest._data.tokens.Keys, pSrc);
-
-            TokenData copy = new TokenData(pDest._data);
-            foreach (KeyValuePair<string, int> pair in pSrc._data.tokens)
-            {
-                copy.tokens[pair.Key] += pSrc._data.tokens[pair.Key];
-            }
-
-            return new TokenCollection(copy);
-        }
-
-        /// <summary>
-        /// Merges all the tokens from both collections. Adding their counts together.
-        /// </summary>
-        public static TokenCollection merge(TokenCollection pDest, TokenCollection pSrc)
-        {
-            TokenData copy = new TokenData(pDest._data);
-            foreach (string token in pSrc._data.tokens.Keys)
-            {
-                if (!copy.tokens.ContainsKey(token))
-                {
-                    copy.tokens.Add(token, 0);
-                }
-                copy.tokens[token] += pSrc._data.tokens[token];
-            }
-
-            return new TokenCollection(copy);
-        }
-
-        private static TokenCollection exclude(IEnumerable<string> pExclude, TokenCollection pSrc)
-        {
-            // remove tokens from the source that aren't in the destination.
-            TokenCollection tmp = new TokenCollection(pSrc._data);
-            string[] excludeKeys = pSrc._data.tokens.Keys.Except(pExclude).ToArray();
-            foreach (string exclude in excludeKeys)
-            {
-                tmp.remove(exclude);
-            }
-            return tmp;
-        }
-
-        /// <summary>
         /// The tokens
         /// </summary>
         private readonly TokenData _data;
 
         /// <summary>
-        /// The sum of all token counts.
-        /// </summary>
-        public int sum { get { return _data.sum; } }
-
-        /// <summary>
         /// How many tokens.
         /// </summary>
-        public int count { get { return _data.tokens.Count; } }
+        public int Count
+        {
+            get { return _data.Tokens.Count; }
+        }
+
+        /// <summary>
+        /// The sum of all token counts.
+        /// </summary>
+        public int Sum
+        {
+            get { return _data.Sum; }
+        }
+
+        private static TokenCollection Exclude(IEnumerable<string> pExclude, TokenCollection pSrc)
+        {
+            // remove tokens from the source that aren't in the destination.
+            TokenCollection tmp = new TokenCollection(pSrc._data);
+            string[] excludeKeys = pSrc._data.Tokens.Keys.Except(pExclude).ToArray();
+            foreach (string exclude in excludeKeys)
+            {
+                tmp.Remove(exclude);
+            }
+            return tmp;
+        }
+
+        /// <summary>
+        /// Removes a token from the collection.
+        /// </summary>
+        private void Remove(string pToken)
+        {
+            if (_data.Tokens.ContainsKey(pToken))
+            {
+                _data.Tokens.Remove(pToken);
+            }
+        }
 
         /// <summary>
         /// Constructor
@@ -185,42 +80,155 @@ namespace Bayesian
         }
 
         /// <summary>
-        /// Returns how many times the token exists in this collection.
+        /// Adds the counts from a collection.
+        /// Only tokens that exist in the destination will be added.
         /// </summary>
-        public int get(string pToken)
+        public static TokenCollection Add(TokenCollection pDest, TokenCollection pSrc)
         {
-            return _data.tokens.ContainsKey(pToken) ? _data.tokens[pToken] : 0;
+            pSrc = Exclude(pDest._data.Tokens.Keys, pSrc);
+
+            TokenData copy = new TokenData(pDest._data);
+            foreach (KeyValuePair<string, int> pair in pSrc._data.Tokens)
+            {
+                copy.Tokens[pair.Key] += pSrc._data.Tokens[pair.Key];
+            }
+
+            return new TokenCollection(copy);
+        }
+
+        /// <summary>
+        /// Converts JSON into a TokenCollection object.
+        /// </summary>
+        public static TokenCollection Deserialize(string pJSON)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Dictionary<string, int> tokens = serializer.Deserialize<Dictionary<string, int>>(pJSON);
+            return new TokenCollection(tokens);
+        }
+
+        /// <summary>
+        /// Merges all the tokens from both collections. Adding their counts together.
+        /// </summary>
+        public static TokenCollection Merge(TokenCollection pDest, TokenCollection pSrc)
+        {
+            TokenData copy = new TokenData(pDest._data);
+            foreach (string token in pSrc._data.Tokens.Keys)
+            {
+                if (!copy.Tokens.ContainsKey(token))
+                {
+                    copy.Tokens.Add(token, 0);
+                }
+                copy.Tokens[token] += pSrc._data.Tokens[token];
+            }
+
+            return new TokenCollection(copy);
+        }
+
+        /// <summary>
+        /// Converts a TokenCollection object into JSON
+        /// </summary>
+        public static string Serialize(TokenCollection pCollection)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Serialize(pCollection._data.Tokens);
+        }
+
+        /// <summary>
+        /// Subtracts the counts from a collection.
+        /// Only tokens that exist in the destination will be subtracted.
+        /// </summary>
+        public static TokenCollection Subtract(TokenCollection pDest, TokenCollection pSrc)
+        {
+            if (pDest.Sum < pSrc.Sum)
+            {
+                throw new ArgumentException("Can not subtract a larger collection");
+            }
+
+            pSrc = Exclude(pDest._data.Tokens.Keys, pSrc);
+
+            TokenData copy = new TokenData(pDest._data);
+            foreach (string token in pSrc._data.Tokens.Keys)
+            {
+                copy.Tokens[token] -= pSrc._data.Tokens[token];
+                if (copy.Tokens[token] <= 0)
+                {
+                    copy.Tokens.Remove(token);
+                }
+            }
+
+            return new TokenCollection(copy);
         }
 
         /// <summary>
         /// Adds a token to the collection.
         /// </summary>
-        public void add(string pToken)
+        public void Add(string pToken)
         {
-            if (!_data.tokens.ContainsKey(pToken))
+            if (!_data.Tokens.ContainsKey(pToken))
             {
-                _data.tokens.Add(pToken, 0);
+                _data.Tokens.Add(pToken, 0);
             }
-            _data.tokens[pToken]++;
-        }
-
-        /// <summary>
-        /// Removes a token from the collection.
-        /// </summary>
-        private void remove(string pToken)
-        {
-            if (_data.tokens.ContainsKey(pToken))
-            {
-                _data.tokens.Remove(pToken);
-            }
+            _data.Tokens[pToken]++;
         }
 
         /// <summary>
         /// Checks if a token exists in the collection.
         /// </summary>
-        public bool contains(string pToken)
+        public bool Contains(string pToken)
         {
-            return _data.tokens.ContainsKey(pToken);
+            return _data.Tokens.ContainsKey(pToken);
+        }
+
+        /// <summary>
+        /// Returns how many times the token exists in this collection.
+        /// </summary>
+        public int get(string pToken)
+        {
+            return _data.Tokens.ContainsKey(pToken) ? _data.Tokens[pToken] : 0;
+        }
+
+        /// <summary>
+        /// Serializable data
+        /// </summary>
+        public class TokenData
+        {
+            /// <summary>
+            /// The sum of all token counts.
+            /// </summary>
+            [ScriptIgnore]
+            public int Sum
+            {
+                get { return Tokens.Values.Sum(); }
+            }
+
+            /// <summary>
+            /// Token counter.
+            /// </summary>
+            public Dictionary<string, int> Tokens { get; private set; }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public TokenData()
+            {
+                Tokens = new Dictionary<string, int>();
+            }
+
+            /// <summary>
+            /// Copy constructor
+            /// </summary>
+            public TokenData(TokenData pData)
+            {
+                Tokens = new Dictionary<string, int>(pData.Tokens);
+            }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public TokenData(Dictionary<string, int> pTokens)
+            {
+                Tokens = pTokens;
+            }
         }
     }
 }

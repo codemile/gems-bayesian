@@ -17,7 +17,10 @@ namespace Bayesian
         /// <summary>
         /// The total number of tokens counted.
         /// </summary>
-        public int sum { get { return _tokens.Values.Sum(); } }
+        public int Sum
+        {
+            get { return _tokens.Values.Sum(); }
+        }
 
         /// <summary>
         /// Constructor
@@ -30,20 +33,17 @@ namespace Bayesian
         /// <summary>
         /// Adds a collection of tokens.
         /// </summary>
-        public void add(IEnumerable<string> pTokens)
+        public void Add(IEnumerable<string> pTokens)
         {
-            foreach (string token in pTokens)
-            {
-                add(token);
-            }
+            pTokens.ToList().ForEach(Add);
         }
 
         /// <summary>
         /// Adds a token to the collection.
         /// </summary>
-        private void add(string pToken)
+        public void Add(string pToken)
         {
-            string token = process(pToken);
+            string token = Process(pToken);
             if (token == null)
             {
                 return;
@@ -56,23 +56,24 @@ namespace Bayesian
         }
 
         /// <summary>
-        /// Converts the processor into a TokenCollection.
-        /// </summary>
-        /// <returns>The new TokenCollection</returns>
-        public TokenCollection toCollection(int pMinCount)
-        {
-            Dictionary<string, int> tmp = _tokens.Where(pPair => pPair.Value > pMinCount).ToDictionary(pPair => pPair.Key, pPair => pPair.Value);
-            return new TokenCollection(tmp);
-        }
-
-        /// <summary>
         /// Returns the count of how many tokens have the min count.
         /// </summary>
         /// <param name="pMinCount"></param>
         /// <returns></returns>
-        public int count(int pMinCount)
+        public int Count(int pMinCount)
         {
-            return _tokens.Count(pPair => pPair.Value > pMinCount);
+            return _tokens.Count(pPair=>pPair.Value > pMinCount);
+        }
+
+        /// <summary>
+        /// Converts the processor into a TokenCollection.
+        /// </summary>
+        /// <returns>The new TokenCollection</returns>
+        public TokenCollection ToCollection(int pMinCount)
+        {
+            Dictionary<string, int> tmp = _tokens.Where(pPair=>pPair.Value > pMinCount)
+                .ToDictionary(pPair=>pPair.Key, pPair=>pPair.Value);
+            return new TokenCollection(tmp);
         }
     }
 }
