@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bayesian\Bayesian.csproj">
-      <Project>{B2F57680-662D-4CDC-A2B2-56B9AE7FB895}</Project>
-      <Name>Bayesian</Name>
+      <Project>{53600A0A-4AB4-4CC9-9D82-E77239059629}</Project>
+      <Name>Bayesian %28Public\Bayesian\Bayesian%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
