@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest.Words
 {
     [TestClass]
-    public class ProcessorsTest
+    public class ProcessorsTests
     {
         [TestMethod]
         public void Test_Empty()

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest
 {
     [TestClass]
-    public class TokenCollectionTest : BayesianTest
+    public class TokenCollectionTests : BayesianTest
     {
         private const string _JSON = "{\"hello\":3,\"chicken\":1}";
 

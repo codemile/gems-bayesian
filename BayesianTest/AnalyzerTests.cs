@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest
 {
     [TestClass]
-    public class AnalyzerTest : BayesianTest
+    public class AnalyzerTests : BayesianTest
     {
         [TestMethod]
         public void Test_Score()

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest.Words
 {
     [TestClass]
-    public class LowerCaseProcessorTest
+    public class LowerCaseProcessorTests
     {
         [TestMethod]
         public void Test_LowerCase()

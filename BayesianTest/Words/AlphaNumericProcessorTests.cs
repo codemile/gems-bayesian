@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest.Words
 {
     [TestClass]
-    public class AlphaNumericProcessorTest
+    public class AlphaNumericProcessorTests
     {
         /// <summary>
         /// A list of strings that should be rejected.

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest.Words
 {
     [TestClass]
-    public class SimilarLookingProcessorTest
+    public class SimilarLookingProcessorTests
     {
         private static void AreEqual(string pA, StringBuilder pB)
         {

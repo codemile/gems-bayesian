@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BayesianTest.Words
 {
     [TestClass]
-    public class MinMaxProcessorTest
+    public class MinMaxProcessorTests
     {
         private readonly string[] _justRight =
         {

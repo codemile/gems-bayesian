@@ -45,15 +45,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalyzerTest.cs" />
+    <Compile Include="AnalyzerTests.cs" />
     <Compile Include="BayesianTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TokenCollectionTest.cs" />
-    <Compile Include="Words\AlphaNumericProcessorTest.cs" />
-    <Compile Include="Words\LowerCaseProcessorTest.cs" />
-    <Compile Include="Words\MinMaxProcessorTest.cs" />
-    <Compile Include="Words\ProcessorsTest.cs" />
-    <Compile Include="Words\SimilarLookingProcessorTest.cs" />
+    <Compile Include="TokenCollectionTests.cs" />
+    <Compile Include="Words\AlphaNumericProcessorTests.cs" />
+    <Compile Include="Words\LowerCaseProcessorTests.cs" />
+    <Compile Include="Words\MinMaxProcessorTests.cs" />
+    <Compile Include="Words\ProcessorsTests.cs" />
+    <Compile Include="Words\SimilarLookingProcessorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bayesian\Bayesian.csproj">
