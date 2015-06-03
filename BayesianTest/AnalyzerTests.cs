@@ -17,7 +17,6 @@ namespace BayesianTest
             const string document = "ikea kitchen mouse ikea kitchen mouse ikea kitchen mouse ikea kitchen mouse";
             Tokens tokens = new Tokens(document, proc);
 
-            Analyzer a = new Analyzer();
             float score = Analyzer.Score(tokens, good, bad);
 
             //Assert.AreEqual(0.0f, score);

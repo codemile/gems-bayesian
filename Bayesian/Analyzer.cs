@@ -6,7 +6,7 @@ namespace Bayesian
     /// <summary>
     /// The main class that performs the bayesian filtering calculations.
     /// </summary>
-    public class Analyzer
+    public static class Analyzer
     {
         /// <summary>
         /// Calculates a probability value based on statistics from two categories
